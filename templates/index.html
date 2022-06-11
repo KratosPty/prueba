@@ -1,0 +1,180 @@
+{% extends "Pagina.html" %} {% block content %}
+
+<!doctype html>
+<html lang="en">
+  <head>
+  
+    <meta charset="utf-8">
+   
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+    <title>Traductor</title>
+<link rel="stylesheet"  type="text/css" href="style.css" media="screen" />
+
+</head>
+<body>
+  <center>
+   <h1 id="grabavalido"><img src="https://i.postimg.cc/z3YVcCD2/logo2.png"width="118" height="100"> Neural Machine Translation </h1>
+  </center>
+
+    <h2 id="grabavalido"> Escribe o Graba tu voz!</h2>
+    
+                <div class="container">
+                  <div class="box">
+                    
+                    <h2 id="primario">Español</h2>
+                    <button id ="cambiar" >
+                      cambiar
+                    </button>
+                    <button id="btnStop" >
+                      Parar
+                      </button>
+                     
+                      <button id="btnStart">
+                        Grabar
+                        </button>
+                      
+                        <textarea id="texto"> </textarea>
+                      </div>
+                        <div class="box">
+                          <h2 id="segundario">Ngäbe</h2>
+                          <textarea id="texto2" readonly> </textarea>
+                        </div>
+                </div>
+
+                <button class="btn-success" id="predecir" onclick="predecir()">
+                  Traducir
+                  </button>
+               
+            </body>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@3.18.0/dist/tf.min.js"></script>
+
+    <script type="text/javascript">
+        //recognition
+const cambiar = document.getElementById('cambiar');        
+const btnStart = document.getElementById('btnStart');
+const btnStop = document.getElementById('btnStop');
+const texto = document.getElementById('texto');
+const texto2 = document.getElementById('texto2');
+const Traducir = document.getElementById('Traducir')
+
+const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition
+
+const mic = new SpeechRecognition();
+mic.continuos = true;
+mic.interimResults = false;
+mic.lang = 'es-ES';
+
+
+mic.onresult = event=> {
+  const transcript = Array.from(event.results)
+  .map(result => result[0])
+  .map(result => result.transcript)
+  .join('')
+  console.log(transcript)
+  texto.value=transcript
+  mic.onerror = event => {
+    console.log(event.error)
+  }
+    
+}
+mic.onend = (event) => {
+console.log("El microfono deja de escuchar");
+
+}
+
+btnStart.addEventListener('click', () => {
+  
+  
+  texto.value =""
+  texto2.value=""
+    mic.start();
+    
+
+})
+
+cambiar.addEventListener('click', () => {
+  texto.value=""
+  texto2.value=""
+  const memoria = document.getElementById('primario').innerHTML;
+  const primario = document.getElementById('primario').innerHTML;
+  const segundario = document.getElementById('segundario').innerHTML
+  document.getElementById('primario').innerHTML = segundario;
+  document.getElementById('segundario').innerHTML=memoria;
+
+  //memoria del titulo grabar o escribir
+  const memoria2 = "Escribe o Graba tu voz!"
+  const memoria3 = "Tigue!"
+  const actual =document.getElementById('primario').innerHTML;
+  
+  if (actual == "Ngäbe"){
+    
+    document.getElementById('grabavalido').innerHTML = memoria3;
+    document.getElementById('btnStart').style.display = 'none';
+    document.getElementById('btnStop').style.display = 'none';
+ } else {
+   document.getElementById('grabavalido').innerHTML = memoria2;
+   document.getElementById('btnStart').style.display = 'block';
+    document.getElementById('btnStop').style.display = 'block';
+ }
+
+  })
+
+
+
+btnStop.addEventListener('click', () =>{
+    mic.abort();
+    texto.value =""
+    texto2.value=""
+
+})
+
+
+
+
+$('#predecir').click(function () {
+  const actual =document.getElementById('primario').innerHTML;
+  if (actual == "Ngäbe"){
+  var variable = document.getElementById('texto').value;
+  var idioma = 2
+} else {
+  var variable = document.getElementById('texto').value
+  var idioma = 1
+}
+
+
+   let frase = {
+       'frase':variable,
+       'idioma':idioma,
+   }
+   const request = new XMLHttpRequest()
+   request.open('POST', `/processUserInfo/${JSON.stringify(frase)}`)
+  request.onload = () =>{
+      const FlaskMessage = request.responseText
+      console.log(FlaskMessage)
+      if (actual == "Ngäbe"){
+      document.getElementById('texto2').value = FlaskMessage
+     let utterance = new SpeechSynthesisUtterance(FlaskMessage)
+utterance.lang = 'es-ES'
+speechSynthesis.speak(utterance)
+} else {
+  document.getElementById('texto2').value = FlaskMessage
+  let utterance = new SpeechSynthesisUtterance(FlaskMessage)
+utterance.lang = 'la-LA'
+speechSynthesis.speak(utterance)
+}
+  }
+   request.send()
+  // Make prediction by calling api /predict
+ 
+});
+
+
+
+
+</script>
+
+{% endblock %}
+</html>

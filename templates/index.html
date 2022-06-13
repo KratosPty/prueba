@@ -1,18 +1,50 @@
 {% extends "Pagina.html" %} {% block content %}
 
 <!doctype html>
+<!--[if lte IE 9]>
+<html lang="en" class="oldie">
+<![endif]-->
+<!--[if gt IE 9]><!-->
+<html lang="en">
+<!--<![endif]-->
+=======
 <html lang="en">
   <head>
   
     <meta charset="utf-8">
    
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <link  rel="shortcut icon" href="{{ url_for('static', filename='logo.ico') }}">     
+    <link rel='shortcut icon' href='logo.ico' type='image/x-icon'/>
+
     <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
     <title>Traductor</title>
 <link rel="stylesheet"  type="text/css" href="style.css" media="screen" />
 
 </head>
+
+<body>
+  
+  <nav>
+    <img src="https://i.postimg.cc/TPHtC19r/logo.png"width="70" height="72">
+    <h1 id="grabavalidos"> Deep Ngäbe Traslation </h1>
+    <input type="checkbox" id="click">  
+    <label for="click" class="menu-btn">
+        <i class="fa fa-bars"></i>
+    </label>
+      <ul>
+     
+          <li><a class="active" href="{{url_for('index')}}">Traductor</a></li>
+          <li><a href="{{url_for('about')}}">¿Por que este Traductor?</a></li>
+          <li><a href="{{url_for('porque')}}">Sobre Nosotros</a></li>
+        
+      </ul>
+  </nav>
+  <center>
+  
+
 <body>
   <center>
    <h1 id="grabavalido"><img src="https://i.postimg.cc/z3YVcCD2/logo2.png"width="118" height="100"> Neural Machine Translation </h1>
@@ -178,3 +210,4 @@ speechSynthesis.speak(utterance)
 
 {% endblock %}
 </html>
+

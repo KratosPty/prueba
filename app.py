@@ -380,6 +380,7 @@ for _ in range(30):
     translated = decode_sequence(input_sentence)
     
 
+
 	
 	
 
@@ -395,8 +396,22 @@ for _ in range(30):
 
 @app.route('/')
 def index():
+    # Traductor
+
     # Página principal
     return render_template('index.html')
+
+
+
+@app.route('/about')
+def about():
+    # Página Por que este traductor
+    return render_template('About.html')
+
+@app.route('/porque')
+def porque():
+    # Página Por que este traductor
+    return render_template('Porque.html')
 
 
 
@@ -429,6 +444,13 @@ def processUserInfo(frase):
 	return traduccion
 		
 	
+import os
+from flask import send_from_directory
+
+@app.route('/logo.ico')
+def favicon():
+    return send_from_directory(os.path.join(app.root_path, 'static'),
+                               'logo.ico', mimetype='image/vnd.microsoft.icon')
 
 
 

@@ -1,0 +1,36 @@
+{% extends "Pagina.html" %} {% block content %}
+<!doctype html>
+<html lang="en">
+  <head>
+  
+    <meta charset="utf-8">
+   
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    
+    <link  rel="shortcut icon" href="{{ url_for('static', filename='logo.ico') }}">     
+
+    <title>Traductor</title>
+<link rel="stylesheet"  type="text/css" href="style.css" media="screen" />
+
+</head>
+
+<body>
+  <nav>
+    <img src="https://i.postimg.cc/TPHtC19r/logo.png"width="70" height="72">
+    <h1 id="grabavalidos"> Deep Ngäbe Traslation </h1>   
+     <input type="checkbox" id="click">  
+    <label for="click" class="menu-btn">
+        <i class="fa fa-bars"></i>
+    </label>
+      <ul>
+     
+          <li><a class="active" href="{{url_for('index')}}">Traductor</a></li>
+          <li><a href="{{url_for('about')}}">¿Por que este Traductor?</a></li>
+          <li><a href="{{url_for('porque')}}">Sobre Nosotros</a></li>
+        
+      </ul>
+  </nav>
+</body>
+{% endblock %}
+</html>
